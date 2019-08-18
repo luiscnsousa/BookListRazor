@@ -14,3 +14,62 @@
     </div>
 </div>
 
+@if (!string.IsNullOrEmpty(@Model.Message))
+{
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aira-label="clole">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @Model.Message
+    </div>
+}
+
+<form method="post">
+    @if (Model.Books.Any())
+    {
+        <br />
+        <table class="table table-striped border">
+            <tr class="table-secondary">
+                <th>
+                    @Html.DisplayNameFor(m => m.Books.First().Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Books.First().Author)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Books.First().ISBN)
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.Books)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Author)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.ISBN)
+                    </td>
+                    <td>
+                        <button asp-page-handler="Delete"
+                                asp-route-id="@item.Id"
+                                onclick="return confirm('Are you sure you want to delete this book?');"
+                                class="btn btn-danger btn-sm">
+                            Delete
+                        </button>
+                        <a asp-route-id="@item.Id" asp-page="Edit" class="btn btn-success btn-sm">Edit</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <p>
+            No Books Available.
+        </p>
+    }
+</form>
